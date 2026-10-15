@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesScope | Business Sales Analytics</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <aside class="sidebar">
+        <a class="brand" href="#">
+            <span class="brand-mark">S</span>
+            <span>
+                <strong>SalesScope</strong>
+                <small>BUSINESS INTELLIGENCE</small>
+            </span>
+        </a>
+
+        <div class="side-label">WORKSPACE</div>
+        <nav>
+            <a class="nav-link active" href="#overview"><span>◈</span> Overview</a>
+            <a class="nav-link" href="#trends"><span>↗</span> Sales Trends</a>
+            <a class="nav-link" href="#products"><span>◇</span> Products</a>
+            <a class="nav-link" href="#categories"><span>▦</span> Categories</a>
+            <a class="nav-link" href="#regions"><span>◎</span> Regions</a>
+            <a class="nav-link" href="#insights"><span>✧</span> Insights</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="status-dot"></div>
+            <div>
+                <strong>Future Interns</strong>
+                <small>Data Science · Task 1</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+        <header class="topbar">
+            <div class="breadcrumbs">FUTURE INTERNS <span>/</span> DATA SCIENCE & ANALYTICS</div>
+            <label class="upload-button" for="csvFile">↑ &nbsp; Load your CSV</label>
+            <input type="file" id="csvFile" accept=".csv" hidden>
+        </header>
+
+        <section class="page-heading">
+            <div>
+                <p class="eyebrow">BUSINESS PERFORMANCE OVERVIEW</p>
+                <h1>Sales <span>&</span> Profit Analytics</h1>
+                <p class="subtitle">Understand your performance. Discover opportunities. Make smarter decisions.</p>
+            </div>
+            <div class="date-card">
+                <span class="date-icon">◷</span>
+                <div>
+                    <small>REPORT PERIOD</small>
+                    <strong id="dateRange">Loading report dates…</strong>
+                </div>
+            </div>
+        </section>
+
+        <div class="notice" id="dataNotice">
+            <span class="notice-dot"></span>
+            <span id="dataStatus">Preparing dashboard…</span>
+        </div>
+
+        <section class="kpi-grid">
+            <article class="kpi-card gold">
+                <div class="kpi-top"><span>Total Sales</span><span class="kpi-icon">＄</span></div>
+                <h2 id="totalSales">$0</h2>
+                <p>Revenue generated</p>
+                <div class="kpi-foot"><span class="mini-line">⌁⌁⌁⌁⌁</span><span>Overall revenue</span></div>
+            </article>
+
+            <article class="kpi-card mint">
+                <div class="kpi-top"><span>Total Profit</span><span class="kpi-icon">↗</span></div>
+                <h2 id="totalProfit">$0</h2>
+                <p>Profit earned</p>
+                <div class="kpi-foot"><span class="mini-line">⌁⌁⌁⌁⌁</span><span>Business return</span></div>
+            </article>
+
+            <article class="kpi-card lavender">
+                <div class="kpi-top"><span>Total Orders</span><span class="kpi-icon">▤</span></div>
+                <h2 id="totalOrders">0</h2>
+                <p>Unique orders</p>
+                <div class="kpi-foot"><span class="mini-line">⌁⌁⌁⌁⌁</span><span>Order volume</span></div>
+            </article>
+
+            <article class="kpi-card rose">
+                <div class="kpi-top"><span>Quantity Sold</span><span class="kpi-icon">◇</span></div>
+                <h2 id="totalQuantity">0</h2>
+                <p>Units sold</p>
+                <div class="kpi-foot"><span class="mini-line">⌁⌁⌁⌁⌁</span><span>Sales volume</span></div>
+            </article>
+
+            <article class="kpi-card blue">
+                <div class="kpi-top"><span>Profit Margin</span><span class="kpi-icon">%</span></div>
+                <h2 id="profitMargin">0%</h2>
+                <p>Profit as a share of sales</p>
+                <div class="kpi-foot"><span class="mini-line">⌁⌁⌁⌁⌁</span><span>Profitability</span></div>
+            </article>
+        </section>
+
+        <section class="charts-grid">
+            <article class="panel trend-panel" id="trends">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Sales & Profit Trend</h3>
+                        <p>How performance changes over time</p>
+                    </div>
+                    <span class="panel-tag">TIME SERIES</span>
+                </div>
+                <div class="chart-area"><canvas id="salesTrendChart"></canvas></div>
+            </article>
+
+            <article class="panel" id="products">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Top 5 Products</h3>
+                        <p>Ranked by total sales</p>
+                    </div>
+                    <span class="panel-tag">PRODUCTS</span>
+                </div>
+                <div class="chart-area"><canvas id="topProductsChart"></canvas></div>
+            </article>
+
+            <article class="panel" id="categories">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Category Performance</h3>
+                        <p>Sales contribution by category</p>
+                    </div>
+                    <span class="panel-tag">CATEGORY MIX</span>
+                </div>
+                <div class="chart-area"><canvas id="categoryChart"></canvas></div>
+            </article>
+
+            <article class="panel" id="regions">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Regional Performance</h3>
+                        <p>Compare sales across regions</p>
+                    </div>
+                    <span class="panel-tag">REGIONS</span>
+                </div>
+                <div class="chart-area"><canvas id="regionChart"></canvas></div>
+            </article>
+        </section>
+
+        <section class="bottom-grid" id="insights">
+            <article class="panel insight-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Key Insights</h3>
+                        <p>What the data tells us</p>
+                    </div>
+                    <span class="insight-symbol">✧</span>
+                </div>
+                <ul id="insightsList">
+                    <li>Preparing insights from your data…</li>
+                </ul>
+            </article>
+
+            <article class="panel insight-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Business Recommendations</h3>
+                        <p>Potential next steps</p>
+                    </div>
+                    <span class="insight-symbol">◎</span>
+                </div>
+                <ul id="recommendationsList">
+                    <li>Preparing recommendations…</li>
+                </ul>
+            </article>
+        </section>
+
+        <footer>
+            <span>SalesScope <span class="footer-separator">/</span> Business Sales Performance Analytics</span>
+            <span>Future Interns · Task 1</span>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
